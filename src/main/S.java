@@ -1,7 +1,7 @@
 package main;
 
 import service.StudentService;
-import util.FileUtil;
+
 import model.Student;
 
 import java.util.InputMismatchException;
@@ -10,6 +10,18 @@ import java.util.Scanner;
 import exception.InvalidStudentException;
 
 public class S{
+
+    private static int readInt(Scanner sc, String message) {
+        while (true) {
+            try {
+                System.out.print(message);
+                return sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                sc.nextLine();
+            }
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -75,8 +87,17 @@ public class S{
 
 
                 case 2:
-                    service.viewStudents();
+                    var students = service.viewStudents();
+
+                    if (students.isEmpty()) {
+                        System.out.println("No students found.");
+                    } else {
+                        for (Student s : students) {
+                            System.out.println(s);
+                        }
+                    }
                     break;
+
 
                 case 3:
                     System.out.print("Enter Student ID to search: ");
@@ -90,24 +111,32 @@ public class S{
                     }
                     break;
 
-                case 4:
-                    System.out.print("Enter Student ID to update: ");
-                    int updateId = sc.nextInt();
+                    case 4:
+                    try {
+                        int updateId = readInt(sc, "Enter Student ID to update: ");
 
-                    sc.nextLine();
-                    System.out.print("Enter New Name: ");
-                    String newName = sc.nextLine();
+                        sc.nextLine();
+                        System.out.print("Enter New Name: ");
+                        String newName = sc.nextLine();
 
-                    System.out.print("Enter New Age: ");
-                    int newAge = sc.nextInt();
+                        int newAge = readInt(sc, "Enter New Age: ");
 
-                    sc.nextLine();
-                    System.out.print("Enter New Course: ");
-                    String newCourse = sc.nextLine();
+                        sc.nextLine();
+                        System.out.print("Enter New Course: ");
+                        String newCourse = sc.nextLine();
 
-                    boolean updated = service.updateStudent(updateId, newName, newAge, newCourse);
-                    System.out.println(updated ? "Student updated successfully." : "Student not found.");
+                        boolean updated = service.updateStudent(updateId, newName, newAge, newCourse);
+
+                        System.out.println(updated
+                                ? "Student updated successfully."
+                                : "Student not found.");
+
+                    } 
+                    catch (InvalidStudentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
                     break;
+
 
                 case 5:
                     System.out.print("Enter Student ID to delete: ");
@@ -118,7 +147,6 @@ public class S{
                     break;
 
                 case 6:
-                    FileUtil.saveStudents(service.getStudents());
                     System.out.println("Exiting application...");
                     sc.close();
                     return;

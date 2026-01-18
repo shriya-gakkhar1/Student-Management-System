@@ -1,0 +1,12 @@
+# Compiled Java files
+*.class
+
+# Runtime data
+data/student.txt
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
