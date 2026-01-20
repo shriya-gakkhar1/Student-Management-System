@@ -109,4 +109,32 @@ public boolean updateStudent(Student student) throws SQLException {
     }
 }
 
+// GET SORTED STUDENTS
+public ArrayList<Student> getSortedStudents(String column, String order) throws SQLException {
+
+    ArrayList<Student> list = new ArrayList<>();
+
+    // ⚠️ Prevent SQL injection by allowing only known columns
+    if (!(column.equals("id") || column.equals("name") || column.equals("age"))) {
+        throw new SQLException("Invalid sort column");
+    }
+
+    String sql = "SELECT * FROM students ORDER BY " + column + " " + order;
+
+    try (Connection con = getConnection();
+         Statement st = con.createStatement();
+         ResultSet rs = st.executeQuery(sql)) {
+
+        while (rs.next()) {
+            list.add(new Student(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getInt("age"),
+                    rs.getString("course")
+            ));
+        }
+    }
+    return list;
+}
+
 }

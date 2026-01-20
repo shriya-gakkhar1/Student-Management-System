@@ -93,5 +93,26 @@ public boolean updateStudent(int id, String name, int age, String course) throws
     }
 }
 
+
+    // SORT STUDENTS
+public ArrayList<Student> sortStudents(int choice) {
+
+    String column;
+    String order = "ASC";
+
+    switch (choice) {
+        case 1 -> column = "name";
+        case 2 -> column = "age";
+        case 3 -> column = "id";
+        default -> throw new RuntimeException("Invalid sort choice");
+    }
+
+    try {
+        return dao.getSortedStudents(column, order);
+    } catch (SQLException e) {
+        throw new RuntimeException("Database error while sorting students");
+    }
+}
+
 }
    

@@ -36,6 +36,7 @@ public class S{
             System.out.println("4. Update Student");
             System.out.println("5. Delete Student");
             System.out.println("6. Exit");
+            System.out.println("7. Sort Students");
             System.out.print("Enter your choice: ");
 
             int choice = sc.nextInt();
@@ -150,6 +151,26 @@ public class S{
                     System.out.println("Exiting application...");
                     sc.close();
                     return;
+
+                case 7:
+                    System.out.println("Sort By:");
+                    System.out.println("1. Name");
+                    System.out.println("2. Age");
+                    System.out.println("3. ID");
+
+                    int sortChoice = readInt(sc, "Enter choice: ");
+
+                    var sorted = service.sortStudents(sortChoice);
+
+                    if (sorted.isEmpty()) {
+                        System.out.println("No students found.");
+                    } else {
+                        for (Student s : sorted) {
+                            System.out.println(s);
+                        }
+                    }
+                    break;
+
 
                 default:
                     System.out.println("Invalid choice. Try again.");
